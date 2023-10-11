@@ -43,14 +43,12 @@ export default function HomeScreen() {
             aria-describedby="json-file-error"
             aria-errormessage="json-file-error"
           />
-          {error && (
-            <p
-              id="json-file-error"
-              role="alert"
-            >
-              {error}
-            </p>
-          )}
+          <p
+            id="json-file-error"
+            role="alert"
+          >
+            {error}
+          </p>
         </div>
       </form>
     </div>
