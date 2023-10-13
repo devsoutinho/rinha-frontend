@@ -15,12 +15,11 @@ export default function HomeScreen() {
           <label
             tabIndex={0}
             htmlFor="json-file"
-            onKeyDown={function (e) {
+            onKeyDown={function loadJSONKeyDownHandler(e) {
               const $label = e.target as HTMLLabelElement;
               const labelFor = $label.getAttribute("for");
-              if (e.key === "Enter" || e.key === " ") {
-                document.getElementById(labelFor).click();
-              }
+              const isKeyboardClick = e.key === "Enter" || e.key === " ";
+              if (isKeyboardClick) document.getElementById(labelFor).click();
             }}
           >
             Load JSON
@@ -30,7 +29,7 @@ export default function HomeScreen() {
             id="json-file"
             name="json-file"
             type="file"
-            onChange={function (e) {
+            onChange={function jsonInputChangeHandler(e) {
               const currentFile = e.target.files[0];
               console.log(currentFile);
               if (currentFile.type !== "application/json") {
