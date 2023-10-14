@@ -14,25 +14,25 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
     const $container = containerRef.current as HTMLUListElement;
     const windowHeight = window.innerHeight;
     const containerPositions =  $container.getBoundingClientRect();
-    console.log(containerPositions);
-    setLimit(Math.ceil(windowHeight / itemHeight));
+    
+    setLimit(Math.ceil(windowHeight / itemHeight) + 10);
     
 
     $container.style.height = `${data.length * itemHeight}px`;
 
     // TODO: Change to intersection observer
     function scrollHandler(e) {
-      // set offset based on scroll position
       const scrollPosition = window.scrollY;
       const offset = Math.floor(scrollPosition / itemHeight);
-      setOffset(offset);
-      // set limit based on scroll position
-      const windowHeight = window.innerHeight;
-      const containerPositions =  $container.getBoundingClientRect();
-      console.log(containerPositions);
-      setLimit(Math.ceil(windowHeight / itemHeight));
+      const limit = Math.ceil(windowHeight / itemHeight);
+      const containerMarginTop = `${offset * itemHeight - scrollPosition}px`;
+      
+      setOffset(() => {
+        $container.style.marginTop = containerMarginTop;
+        return offset;
+      });
 
-      // update margin top of $container based in scroll position
+      console.log({ scrollPosition, offset, limit, containerMarginTop });
     }
 
     window.addEventListener("scroll", scrollHandler);
@@ -42,11 +42,12 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
   }, []);
   
   return (
-    <ul ref={containerRef}
+    <ul
+      ref={containerRef}
     >
       {
       data
-      .slice(offset, limit)
+      .slice(offset, limit + offset)
       .map((item, index) => {
         return (
           <li
