@@ -24,12 +24,13 @@ export function DisplayJSONScreen({ jsonFile }: DisplayJSONScreenProps) {
         style={{
           width: "100%",
           flex: 1,
+          whiteSpace: "pre",
         }}
       >
         <VirtualizedList
           data={fileContentLines}
-          renderItem={(_, index, data) => (
-            <div>{parseJSONByLine(index, data)}</div>
+          renderItem={(line) => (
+            <div>{line}</div>
           )}
         />
       </div>

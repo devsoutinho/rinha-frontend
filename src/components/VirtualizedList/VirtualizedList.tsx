@@ -52,7 +52,6 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
           <li
             key={`VirtualizedList__${index}`}
             style={{
-              whiteSpace: "pre",
               height: itemHeight,
             }}
           >
