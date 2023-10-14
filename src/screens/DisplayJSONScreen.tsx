@@ -1,6 +1,5 @@
 import { JSONFile } from "@src/domain/JSONFile";
 import { VirtualizedList } from "@src/components/VirtualizedList/VirtualizedList";
-import { parseJSONByLine } from "@src/logic/parseJSON";
 
 interface DisplayJSONScreenProps {
   jsonFile: JSONFile;
