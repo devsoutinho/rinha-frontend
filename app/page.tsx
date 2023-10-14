@@ -4,9 +4,11 @@ import { LoadJSONScreen } from "@src/screens/LoadJSONScreen";
 import { DisplayJSONScreen } from "@src/screens/DisplayJSONScreen";
 import { JSONFile } from "@src/domain/JSONFile";
 
+const DEBUG = false;
+
 export default function HomeScreen() {
   const [error, setError] = React.useState("");
-  const jsonFileMock = false ? {
+  const jsonFileMock = DEBUG ? {
     name: "alltypes.mock.json",
     contentGlobalKey: "mock",
   } : null;

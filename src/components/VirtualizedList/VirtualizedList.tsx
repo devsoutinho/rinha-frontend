@@ -15,6 +15,7 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
     const $container = containerRef.current as HTMLUListElement;
     const windowHeight = window.innerHeight;
     const containerPositions =  $container.getBoundingClientRect();
+    const diffFromTopToContainer = containerPositions.top;
     
     setScreenLimit(Math.ceil(windowHeight / itemHeight));
     
@@ -24,7 +25,7 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
 
     // TODO: Change to intersection observer
     function scrollHandler(e) {
-      const diffFromTopToContainer = containerPositions.top;
+
       const scrollPosition = window.scrollY;
       const offset = Math.floor(scrollPosition / itemHeight);
       const limit = Math.ceil(windowHeight / itemHeight);
@@ -32,11 +33,10 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
       const containerMarginTop = scrollPosition - diffFromTopToContainer;
       
       setOffset(() => {
-        $container.style.marginTop = `${containerMarginTop < 0 ? 0 : containerMarginTop}px`;
         return offset;
       });
 
-      console.log({ scrollPosition, offset, limit, containerMarginTop });
+      console.log({ scrollPosition, offset, limit });
     }
 
     window.addEventListener("scroll", scrollHandler);
@@ -48,6 +48,9 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
   return (
     <ul
       ref={containerRef}
+      style={{
+        position: "relative",
+      }}
     >
       {
       data
@@ -58,6 +61,8 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
           <li
             key={`VirtualizedList__${index}`}
             style={{
+              position: "absolute",
+              top: `${itemIndex * itemHeight}px`,
               height: itemHeight,
             }}
           >
