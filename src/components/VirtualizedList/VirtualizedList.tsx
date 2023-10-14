@@ -18,8 +18,9 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
     
     setScreenLimit(Math.ceil(windowHeight / itemHeight));
     
+    const containerMaxHeight = data.length * itemHeight;
+    $container.style.height = `${containerMaxHeight}px`;
 
-    $container.style.height = `${data.length * itemHeight}px`;
 
     // TODO: Change to intersection observer
     function scrollHandler(e) {
@@ -44,13 +45,6 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
     }
   }, []);
 
-  console.log(
-    offset,
-    limit,
-    data
-    .slice(offset, limit)
-  );
-  
   return (
     <ul
       ref={containerRef}
