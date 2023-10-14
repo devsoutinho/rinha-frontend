@@ -55,8 +55,8 @@ export function LoadJSONScreen({ error, setError, setJSONFile }: LoadJSONScreenP
             function readerLoadHandler(e: ProgressEvent<FileReader>) {
               const fileContent = e.target.result as string;
               try {
-                JSON.parse(fileContent);
-                globalThis.jsonFileContent = fileContent;
+                const fileContentNormalized = JSON.stringify(JSON.parse(fileContent), null, 2);
+                globalThis.jsonFileContent = fileContentNormalized;
                 setJSONFile({
                   contentGlobalKey: "jsonFileContent",
                   name: fileName.current,
