@@ -13,7 +13,7 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
   React.useLayoutEffect(() => {
     const $container = containerRef.current as HTMLUListElement;
     const windowHeight = window.innerHeight;
-    const containerPositions =  $container.getBoundingClientRect();
+    // const containerPositions =  $container.getBoundingClientRect();
     
     setLimit(Math.ceil(windowHeight / itemHeight) + 10);
     
