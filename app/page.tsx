@@ -6,7 +6,7 @@ import { JSONFile } from "@src/domain/JSONFile";
 
 export default function HomeScreen() {
   const [error, setError] = React.useState("");
-  const jsonFileMock = true ? {
+  const jsonFileMock = false ? {
     name: "alltypes.mock.json",
     contentGlobalKey: "mock",
   } : null;

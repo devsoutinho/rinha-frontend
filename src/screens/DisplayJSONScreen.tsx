@@ -28,8 +28,8 @@ export function DisplayJSONScreen({ jsonFile }: DisplayJSONScreenProps) {
       >
         <VirtualizedList
           data={fileContentLines}
-          renderItem={(line) => (
-            <div>{line}</div>
+          renderItem={(line, index) => (
+            <div>[{index}] {line}</div>
           )}
         />
       </div>

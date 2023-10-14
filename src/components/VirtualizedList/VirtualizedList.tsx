@@ -6,29 +6,32 @@ interface VirtualizedListProps<DataType> {
 }
 export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListProps<DataType>) {
   const containerRef = React.useRef();
-  const [offset, setOffset] = React.useState(0);
-  const [limit, setLimit] = React.useState(10);
   const itemHeight = 20;
+  const [offset, setOffset] = React.useState(0);
+  const [screenLimit, setScreenLimit] = React.useState(10);
+  const limit = offset + screenLimit;
 
   React.useLayoutEffect(() => {
     const $container = containerRef.current as HTMLUListElement;
     const windowHeight = window.innerHeight;
-    // const containerPositions =  $container.getBoundingClientRect();
+    const containerPositions =  $container.getBoundingClientRect();
     
-    setLimit(Math.ceil(windowHeight / itemHeight) + 10);
+    setScreenLimit(Math.ceil(windowHeight / itemHeight));
     
 
     $container.style.height = `${data.length * itemHeight}px`;
 
     // TODO: Change to intersection observer
     function scrollHandler(e) {
+      const diffFromTopToContainer = containerPositions.top;
       const scrollPosition = window.scrollY;
       const offset = Math.floor(scrollPosition / itemHeight);
       const limit = Math.ceil(windowHeight / itemHeight);
-      const containerMarginTop = `${offset * itemHeight - scrollPosition}px`;
+      
+      const containerMarginTop = scrollPosition - diffFromTopToContainer;
       
       setOffset(() => {
-        $container.style.marginTop = containerMarginTop;
+        $container.style.marginTop = `${containerMarginTop < 0 ? 0 : containerMarginTop}px`;
         return offset;
       });
 
@@ -40,6 +43,13 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
       window.removeEventListener("scroll", scrollHandler);
     }
   }, []);
+
+  console.log(
+    offset,
+    limit,
+    data
+    .slice(offset, limit)
+  );
   
   return (
     <ul
@@ -47,8 +57,9 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
     >
       {
       data
-      .slice(offset, limit + offset)
+      .slice(offset, limit)
       .map((item, index) => {
+        const itemIndex = index + offset;
         return (
           <li
             key={`VirtualizedList__${index}`}
@@ -56,7 +67,7 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
               height: itemHeight,
             }}
           >
-            {renderItem(item, index, data)}
+            {renderItem(item, itemIndex, data)}
           </li>
         )
       })}
