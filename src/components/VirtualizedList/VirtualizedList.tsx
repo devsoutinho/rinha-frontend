@@ -14,29 +14,17 @@ export function VirtualizedList<DataType>({ data, renderItem }: VirtualizedListP
   React.useLayoutEffect(() => {
     const $container = containerRef.current as HTMLUListElement;
     const windowHeight = window.innerHeight;
-    const containerPositions =  $container.getBoundingClientRect();
-    const diffFromTopToContainer = containerPositions.top;
     
     setScreenLimit(Math.ceil(windowHeight / itemHeight));
     
     const containerMaxHeight = data.length * itemHeight;
     $container.style.height = `${containerMaxHeight}px`;
 
-
-    // TODO: Change to intersection observer
-    function scrollHandler(e) {
-
+    function scrollHandler() {
       const scrollPosition = window.scrollY;
       const offset = Math.floor(scrollPosition / itemHeight);
-      const limit = Math.ceil(windowHeight / itemHeight);
       
-      const containerMarginTop = scrollPosition - diffFromTopToContainer;
-      
-      setOffset(() => {
-        return offset;
-      });
-
-      console.log({ scrollPosition, offset, limit });
+      setOffset(offset);
     }
 
     window.addEventListener("scroll", scrollHandler);
